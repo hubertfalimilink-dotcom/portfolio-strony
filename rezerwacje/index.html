@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Studio Nova — rezerwacja online</title>
+<meta name="description" content="System rezerwacji online dla salonu — wybór usługi, wolne terminy, potwierdzenie. Panel dla właściciela.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📅</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#191526; --soft:#6b6480; --bg:#f7f5fb; --card:#fff;
+  --brand:#6a3ee8; --brand-dark:#5228c9; --ok:#12874a; --line:#e6e1f2;
+  --shadow:0 1px 2px rgba(25,21,38,.05),0 10px 30px rgba(25,21,38,.08);
+}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:16px;overflow-x:hidden}
+.wrap{width:min(940px,92vw);margin-inline:auto}
+h1,h2,h3{line-height:1.2;letter-spacing:-.02em;font-weight:800}
+button{font:inherit;cursor:pointer}
+
+.demo-bar{background:#ffd54a;color:#2b2100;text-align:center;padding:.55rem 1rem;font-size:.85rem;font-weight:600}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:1rem 0}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:.5rem}
+.logo em{font-style:normal;color:var(--brand)}
+.tabs{display:flex;gap:.35rem;background:var(--bg);padding:.3rem;border-radius:11px;border:1px solid var(--line)}
+.tabs button{background:none;border:0;padding:.5rem 1rem;border-radius:8px;font-weight:600;font-size:.9rem;color:var(--soft)}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--brand);box-shadow:0 1px 3px rgba(25,21,38,.1)}
+
+main{padding:clamp(1.75rem,4vw,3rem) 0 4rem}
+.panel[hidden]{display:none}
+
+/* ---- KROKI ---- */
+.steps{display:flex;gap:.5rem;margin-bottom:1.75rem;flex-wrap:wrap}
+.stepdot{display:flex;align-items:center;gap:.5rem;font-size:.85rem;font-weight:600;color:var(--soft)}
+.stepdot i{width:1.6rem;height:1.6rem;border-radius:50%;background:var(--line);color:var(--soft);display:grid;place-items:center;font-style:normal;font-size:.8rem;font-weight:800;flex:none}
+.stepdot.on{color:var(--brand)} .stepdot.on i{background:var(--brand);color:#fff}
+.stepdot.done i{background:var(--ok);color:#fff}
+.stepdot::after{content:'›';margin-left:.35rem;color:var(--line);font-size:1.2rem}
+.stepdot:last-child::after{content:''}
+
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:clamp(1.25rem,3vw,1.85rem);margin-bottom:1.15rem}
+.box>h2{font-size:1.15rem;margin-bottom:.25rem}
+.box>p.hint{color:var(--soft);font-size:.9rem;margin-bottom:1.15rem}
+
+/* ---- USLUGI ---- */
+.svc{display:grid;gap:.6rem}
+.svc label{
+  display:flex;align-items:center;gap:.9rem;border:1.5px solid var(--line);
+  border-radius:12px;padding:.9rem 1.05rem;cursor:pointer;transition:border-color .15s,background .15s;
+}
+.svc label:hover{border-color:var(--brand)}
+.svc input{position:absolute;opacity:0;width:0;height:0}
+.svc input:checked+.svc-body{color:inherit}
+.svc label:has(input:checked){border-color:var(--brand);background:rgba(106,62,232,.05);box-shadow:0 0 0 3px rgba(106,62,232,.1)}
+.svc-body{flex:1;min-width:0}
+.svc-body strong{display:block;font-size:1rem}
+.svc-body small{color:var(--soft);font-size:.85rem}
+.svc-meta{text-align:right;flex:none}
+.svc-meta b{display:block;color:var(--brand);font-size:1.02rem}
+.svc-meta small{color:var(--soft);font-size:.82rem}
+
+/* ---- KALENDARZ ---- */
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem}
+.calhead strong{font-size:1.02rem;text-transform:capitalize}
+.calnav{display:flex;gap:.4rem}
+.calnav button{width:2.1rem;height:2.1rem;border:1.5px solid var(--line);background:var(--card);border-radius:8px;color:var(--ink);font-weight:700;display:grid;place-items:center}
+.calnav button:hover:not(:disabled){border-color:var(--brand);color:var(--brand)}
+.calnav button:disabled{opacity:.35;cursor:not-allowed}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:.3rem}
+.cal .dow{text-align:center;font-size:.72rem;font-weight:800;color:var(--soft);text-transform:uppercase;letter-spacing:.05em;padding-bottom:.4rem}
+.cal button{
+  aspect-ratio:1;border:1.5px solid transparent;background:var(--bg);border-radius:9px;
+  font-weight:600;font-size:.92rem;color:var(--ink);display:grid;place-items:center;position:relative;
+}
+.cal button:hover:not(:disabled){border-color:var(--brand)}
+.cal button:disabled{color:#c3bdd2;background:transparent;cursor:not-allowed}
+.cal button.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+.cal button.has::after{content:'';position:absolute;bottom:.35rem;width:4px;height:4px;border-radius:50%;background:var(--ok)}
+.cal button.sel.has::after{background:#fff}
+.cal .pad{visibility:hidden}
+
+/* ---- GODZINY ---- */
+.slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:.5rem}
+.slots button{border:1.5px solid var(--line);background:var(--card);border-radius:9px;padding:.65rem .3rem;font-weight:700;font-size:.92rem;color:var(--ink);font-variant-numeric:tabular-nums}
+.slots button:hover:not(:disabled){border-color:var(--brand);color:var(--brand)}
+.slots button.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+.slots button:disabled{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+.empty{color:var(--soft);font-size:.92rem;padding:.75rem 0}
+
+/* ---- FORMULARZ ---- */
+.field{margin-bottom:.95rem}
+label.lb{display:block;font-size:.85rem;font-weight:700;margin-bottom:.35rem}
+input[type=text],input[type=tel],input[type=email],textarea{
+  width:100%;padding:.78rem .9rem;border:1.5px solid var(--line);border-radius:9px;
+  font:inherit;font-size:.95rem;background:var(--bg);color:var(--ink);
+}
+input:focus,textarea:focus{outline:0;border-color:var(--brand);box-shadow:0 0 0 3px rgba(106,62,232,.13)}
+.err{color:#c0392b;font-size:.82rem;margin-top:.3rem;display:none}
+.field.bad .err{display:block}
+.field.bad input{border-color:#c0392b}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--brand);color:#fff;border:0;font-weight:700;padding:.85rem 1.5rem;border-radius:10px;font-size:.98rem;text-decoration:none;transition:background .15s}
+.btn:hover:not(:disabled){background:var(--brand-dark)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn-ghost{background:transparent;color:var(--soft);border:1.5px solid var(--line)}
+.btn-ghost:hover{background:var(--bg);color:var(--ink)}
+.actions{display:flex;gap:.7rem;justify-content:space-between;flex-wrap:wrap;margin-top:.5rem}
+
+/* ---- PODSUMOWANIE ---- */
+.sum{background:var(--bg);border-radius:12px;padding:1.1rem 1.25rem;margin-bottom:1.15rem;border:1px solid var(--line)}
+.sum dl{display:grid;grid-template-columns:auto 1fr;gap:.5rem 1.25rem;font-size:.94rem}
+.sum dt{color:var(--soft);font-weight:600}
+.sum dd{text-align:right;font-weight:700}
+.sum .tot{border-top:1px dashed var(--line);padding-top:.55rem;margin-top:.2rem}
+.sum .tot dd{color:var(--brand);font-size:1.1rem}
+
+.done{text-align:center;padding:2rem 1rem}
+.done .check{width:62px;height:62px;border-radius:50%;background:rgba(18,135,74,.12);color:var(--ok);display:grid;place-items:center;font-size:2rem;margin:0 auto 1rem}
+.done h2{font-size:1.45rem;margin-bottom:.5rem}
+.done>p{color:var(--soft);margin-bottom:1.4rem}
+.code{display:inline-block;font-family:ui-monospace,Consolas,monospace;background:var(--bg);border:1px dashed var(--brand);color:var(--brand);padding:.5rem 1rem;border-radius:9px;font-weight:800;letter-spacing:.1em;margin-bottom:1.4rem}
+
+/* ---- PANEL ---- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.8rem;margin-bottom:1.15rem}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:1.05rem}
+.stat b{display:block;font-size:1.75rem;letter-spacing:-.03em;line-height:1.1}
+.stat span{font-size:.82rem;color:var(--soft);font-weight:600}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:.9rem;min-width:560px}
+th{text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;color:var(--soft);padding:.6rem .75rem;border-bottom:2px solid var(--line);white-space:nowrap}
+td{padding:.75rem;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.when{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
+td .who{font-weight:700} td .tel{color:var(--soft);font-size:.85rem}
+.pill{display:inline-block;background:rgba(106,62,232,.1);color:var(--brand);font-size:.78rem;font-weight:700;padding:.2rem .6rem;border-radius:999px}
+.del{background:none;border:0;color:#c0392b;font-weight:700;font-size:.85rem;padding:.25rem .4rem;border-radius:6px}
+.del:hover{background:rgba(192,57,43,.09)}
+.noda{text-align:center;color:var(--soft);padding:2.5rem 1rem;font-size:.95rem}
+
+.note{background:#fff8e1;border:1px solid #f0d98a;border-radius:12px;padding:1rem 1.15rem;font-size:.88rem;color:#5c4a10;margin-top:1.5rem}
+.note b{display:block;margin-bottom:.2rem}
+
+@media(max-width:620px){
+  .row2{grid-template-columns:1fr}
+  input,textarea{font-size:16px}
+  .hd{flex-direction:column;align-items:stretch}
+  .tabs{width:100%} .tabs button{flex:1}
+  .sum dl{grid-template-columns:1fr auto}
+  .actions .btn{flex:1}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">Strona demonstracyjna — fikcyjny salon. Rezerwacje zapisują się w przeglądarce.</div>
+
+<header>
+  <div class="wrap hd">
+    <div class="logo">📅 Studio <em>Nova</em></div>
+    <div class="tabs" role="tablist">
+      <button role="tab" id="t-book" aria-selected="true" aria-controls="p-book">Rezerwacja</button>
+      <button role="tab" id="t-admin" aria-selected="false" aria-controls="p-admin">Panel właściciela</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ============ REZERWACJA ============ -->
+<div class="panel" id="p-book" role="tabpanel" aria-labelledby="t-book">
+  <div class="steps" id="steps">
+    <div class="stepdot on" data-s="1"><i>1</i>Usługa</div>
+    <div class="stepdot" data-s="2"><i>2</i>Termin</div>
+    <div class="stepdot" data-s="3"><i>3</i>Dane</div>
+  </div>
+
+  <div id="wizard">
+    <!-- krok 1 -->
+    <div class="box" id="s1">
+      <h2>Wybierz usługę</h2>
+      <p class="hint">Czas i cena wyliczają się automatycznie.</p>
+      <div class="svc" id="svcList"></div>
+    </div>
+
+    <!-- krok 2 -->
+    <div class="box" id="s2" hidden>
+      <h2>Wybierz termin</h2>
+      <p class="hint">Zielona kropka oznacza dzień z wolnymi godzinami. Niedziele i przeszłość są nieaktywne.</p>
+      <div class="calhead">
+        <strong id="calLabel"></strong>
+        <div class="calnav">
+          <button id="prevM" aria-label="Poprzedni miesiąc">‹</button>
+          <button id="nextM" aria-label="Następny miesiąc">›</button>
+        </div>
+      </div>
+      <div class="cal" id="cal"></div>
+      <div style="margin-top:1.3rem">
+        <h3 style="font-size:.95rem;margin-bottom:.65rem" id="slotLabel">Wolne godziny</h3>
+        <div class="slots" id="slots"></div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost" data-back="1">← Wstecz</button>
+        <button class="btn" id="toStep3" disabled>Dalej →</button>
+      </div>
+    </div>
+
+    <!-- krok 3 -->
+    <div class="box" id="s3" hidden>
+      <h2>Twoje dane</h2>
+      <p class="hint">Wyślemy SMS z przypomnieniem dzień wcześniej.</p>
+      <div class="sum" id="sum"></div>
+      <form id="bf" novalidate>
+        <div class="row2">
+          <div class="field">
+            <label class="lb" for="b-name">Imię i nazwisko</label>
+            <input type="text" id="b-name" name="name" autocomplete="name" required>
+            <div class="err">Podaj imię i nazwisko.</div>
+          </div>
+          <div class="field">
+            <label class="lb" for="b-phone">Telefon</label>
+            <input type="tel" id="b-phone" name="phone" inputmode="tel" autocomplete="tel" placeholder="600 100 200" required>
+            <div class="err">Podaj numer (min. 9 cyfr).</div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="lb" for="b-note">Uwagi <span style="font-weight:400;color:var(--soft)">(opcjonalnie)</span></label>
+          <textarea id="b-note" name="note" rows="2" placeholder="Np. pierwszy raz, alergia, wolę rano"></textarea>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-ghost" data-back="2">← Wstecz</button>
+          <button type="submit" class="btn">Potwierdź rezerwację</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="box done" id="done" hidden>
+    <div class="check">✓</div>
+    <h2>Rezerwacja potwierdzona</h2>
+    <p id="doneMsg"></p>
+    <div class="code" id="doneCode"></div>
+    <div class="sum" id="doneSum" style="text-align:left"></div>
+    <button class="btn btn-ghost" id="again">Zarezerwuj kolejny termin</button>
+  </div>
+
+  <div class="note">
+    <b>Uwaga techniczna (demo)</b>
+    Rezerwacje zapisują się w pamięci tej przeglądarki (localStorage), żeby demo działało bez serwera.
+    W wersji produkcyjnej trafiają do bazy danych, a właściciel dostaje SMS/e-mail i wpis w Kalendarzu Google.
+  </div>
+</div>
+
+<!-- ============ PANEL ============ -->
+<div class="panel" id="p-admin" role="tabpanel" aria-labelledby="t-admin" hidden>
+  <div class="stats" id="stats"></div>
+  <div class="box" style="padding:0;overflow:hidden">
+    <div style="padding:1.15rem 1.35rem;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap">
+      <h2 style="font-size:1.1rem">Nadchodzące wizyty</h2>
+      <button class="btn btn-ghost" id="clear" style="padding:.5rem 1rem;font-size:.88rem">Wyczyść wszystkie</button>
+    </div>
+    <div class="tablewrap"><table id="tbl"><tbody></tbody></table></div>
+    <div class="noda" id="noda" hidden>Brak rezerwacji. Umów wizytę w zakładce „Rezerwacja”, żeby zobaczyć, jak to wygląda.</div>
+  </div>
+</div>
+
+</main>
+
+<script>
+'use strict';
+const SERVICES=[
+  {id:'strzyzenie', name:'Strzyżenie damskie',      desc:'Mycie, strzyżenie, modelowanie', min:60,  price:120},
+  {id:'koloryzacja',name:'Koloryzacja',             desc:'Farbowanie + pielęgnacja',       min:150, price:280},
+  {id:'refleksy',   name:'Refleksy / balejaż',      desc:'Rozjaśnianie + tonowanie',       min:180, price:380},
+  {id:'meskie',     name:'Strzyżenie męskie',       desc:'Maszynka i nożyce, broda +20 zł',min:30,  price:70},
+  {id:'upiecie',    name:'Upięcie okolicznościowe', desc:'Ślub, studniówka, sesja',        min:90,  price:220}
+];
+const OPEN={1:[9,19],2:[9,19],3:[9,19],4:[9,20],5:[9,20],6:[9,15],0:null}; // getDay(): 0=niedziela
+const KEY='studio-nova-rez';
+
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}};
+const save=a=>localStorage.setItem(KEY,JSON.stringify(a));
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const pad=n=>String(n).padStart(2,'0');
+const fmtMin=m=>m>=60?(m/60%1?Math.floor(m/60)+' h '+m%60+' min':m/60+' h'):m+' min';
+const fmtDate=s=>{const[y,m,d]=s.split('-');return d+'.'+m+'.'+y};
+const DOW=['niedziela','poniedziałek','wtorek','środa','czwartek','piątek','sobota'];
+const MON=['styczeń','luty','marzec','kwiecień','maj','czerwiec','lipiec','sierpień','wrzesień','październik','listopad','grudzień'];
+
+let state={svc:null,date:null,time:null};
+let view=new Date(); view.setDate(1); view.setHours(0,0,0,0);
+const today=new Date(); today.setHours(0,0,0,0);
+
+/* ---------- generowanie slotow ---------- */
+function slotsFor(dateStr,svc){
+  if(!svc) return [];
+  const d=new Date(dateStr+'T00:00:00'), h=OPEN[d.getDay()];
+  if(!h) return [];
+  const taken=load().filter(b=>b.date===dateStr);
+  const out=[];
+  for(let m=h[0]*60;m+svc.min<=h[1]*60;m+=30){
+    const clash=taken.some(b=>{
+      const bs=b.startMin, be=b.startMin+b.min;
+      return m<be && m+svc.min>bs;
+    });
+    // przeszlosc dzisiaj
+    const now=new Date();
+    const past=(dateStr===iso(now)) && (m <= now.getHours()*60+now.getMinutes());
+    out.push({min:m,label:pad(Math.floor(m/60))+':'+pad(m%60),free:!clash&&!past});
+  }
+  return out;
+}
+const dayHasFree=dateStr=>state.svc?slotsFor(dateStr,state.svc).some(s=>s.free):false;
+
+/* ---------- krok 1: uslugi ---------- */
+const svcList=document.getElementById('svcList');
+svcList.innerHTML=SERVICES.map(s=>`
+  <label>
+    <input type="radio" name="svc" value="${s.id}">
+    <span class="svc-body"><strong>${s.name}</strong><small>${s.desc}</small></span>
+    <span class="svc-meta"><b>${s.price} zł</b><small>${fmtMin(s.min)}</small></span>
+  </label>`).join('');
+svcList.addEventListener('change',e=>{
+  state.svc=SERVICES.find(s=>s.id===e.target.value);
+  state.date=null;state.time=null;
+  go(2); renderCal(); renderSlots();
+});
+
+/* ---------- krok 2: kalendarz ---------- */
+const cal=document.getElementById('cal');
+function renderCal(){
+  document.getElementById('calLabel').textContent=MON[view.getMonth()]+' '+view.getFullYear();
+  const first=(new Date(view.getFullYear(),view.getMonth(),1).getDay()+6)%7; // pon=0
+  const days=new Date(view.getFullYear(),view.getMonth()+1,0).getDate();
+  let h=['Pn','Wt','Śr','Cz','Pt','So','Nd'].map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++) h+='<button class="pad" disabled></button>';
+  for(let d=1;d<=days;d++){
+    const dt=new Date(view.getFullYear(),view.getMonth(),d);
+    const s=iso(dt);
+    const closed=!OPEN[dt.getDay()], past=dt<today;
+    const free=!closed&&!past&&dayHasFree(s);
+    h+=`<button data-d="${s}" ${closed||past||!free?'disabled':''} class="${state.date===s?'sel':''} ${free?'has':''}">${d}</button>`;
+  }
+  cal.innerHTML=h;
+  const cur=new Date(); cur.setDate(1); cur.setHours(0,0,0,0);
+  document.getElementById('prevM').disabled = view<=cur;
+}
+cal.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-d]'); if(!b||b.disabled)return;
+  state.date=b.dataset.d; state.time=null;
+  renderCal(); renderSlots();
+});
+document.getElementById('prevM').onclick=()=>{view.setMonth(view.getMonth()-1);renderCal()};
+document.getElementById('nextM').onclick=()=>{view.setMonth(view.getMonth()+1);renderCal()};
+
+/* ---------- godziny ---------- */
+const slotsEl=document.getElementById('slots');
+function renderSlots(){
+  const lab=document.getElementById('slotLabel');
+  if(!state.date){slotsEl.innerHTML='';lab.textContent='Wolne godziny — najpierw wybierz dzień';document.getElementById('toStep3').disabled=true;return}
+  const d=new Date(state.date+'T00:00:00');
+  lab.textContent='Wolne godziny — '+DOW[d.getDay()]+', '+fmtDate(state.date);
+  const list=slotsFor(state.date,state.svc);
+  slotsEl.innerHTML=list.length
+    ? list.map(s=>`<button data-m="${s.min}" ${s.free?'':'disabled'} class="${state.time===s.min?'sel':''}">${s.label}</button>`).join('')
+    : '<p class="empty">Tego dnia salon jest zamknięty.</p>';
+  document.getElementById('toStep3').disabled = state.time===null;
+}
+slotsEl.addEventListener('click',e=>{
+  const b=e.target.closest('button[data-m]'); if(!b||b.disabled)return;
+  state.time=+b.dataset.m; renderSlots();
+});
+
+/* ---------- nawigacja ---------- */
+function go(n){
+  [1,2,3].forEach(i=>document.getElementById('s'+i).hidden = i!==n);
+  document.querySelectorAll('.stepdot').forEach(el=>{
+    const s=+el.dataset.s;
+    el.classList.toggle('on',s===n);
+    el.classList.toggle('done',s<n);
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-back]').forEach(b=>b.onclick=()=>go(+b.dataset.back));
+document.getElementById('toStep3').onclick=()=>{renderSum();go(3)};
+
+function sumHTML(){
+  const end=state.time+state.svc.min;
+  return `<dl>
+    <dt>Usługa</dt><dd>${state.svc.name}</dd>
+    <dt>Termin</dt><dd>${fmtDate(state.date)}, ${pad(Math.floor(state.time/60))}:${pad(state.time%60)}–${pad(Math.floor(end/60))}:${pad(end%60)}</dd>
+    <dt>Czas trwania</dt><dd>${fmtMin(state.svc.min)}</dd>
+    <dt class="tot">Do zapłaty</dt><dd class="tot">${state.svc.price} zł</dd>
+  </dl>`;
+}
+const renderSum=()=>document.getElementById('sum').innerHTML=sumHTML();
+
+/* ---------- zapis ---------- */
+const bf=document.getElementById('bf');
+const rules={name:v=>v.trim().length>=3,phone:v=>v.replace(/\D/g,'').length>=9};
+function check(el){const ok=rules[el.name]?rules[el.name](el.value):true;el.closest('.field').classList.toggle('bad',!ok);return ok}
+bf.querySelectorAll('input').forEach(el=>{
+  el.addEventListener('blur',()=>{if(el.value)check(el)});
+  el.addEventListener('input',()=>{if(el.closest('.field').classList.contains('bad'))check(el)});
+});
+bf.addEventListener('submit',e=>{
+  e.preventDefault();
+  let ok=true,first=null;
+  bf.querySelectorAll('input[required]').forEach(el=>{if(!check(el)){ok=false;first=first||el}});
+  if(!ok){first.focus();return}
+
+  // ostatnia kontrola kolizji - ktos mogl zajac termin w innej karcie
+  if(!slotsFor(state.date,state.svc).some(s=>s.min===state.time&&s.free)){
+    alert('Ten termin właśnie został zajęty. Wybierz inną godzinę.');
+    state.time=null; renderCal(); renderSlots(); go(2); return;
+  }
+
+  const code='NOVA-'+Math.random().toString(36).slice(2,7).toUpperCase();
+  const all=load();
+  all.push({
+    code, date:state.date, startMin:state.time, min:state.svc.min,
+    svc:state.svc.name, price:state.svc.price,
+    name:bf.name.value.trim(), phone:bf.phone.value.trim(), note:bf.note.value.trim(),
+    made:new Date().toISOString()
+  });
+  save(all);
+
+  document.getElementById('doneMsg').textContent=
+    bf.name.value.trim().split(' ')[0]+', czekamy na Ciebie '+fmtDate(state.date)+
+    ' o '+pad(Math.floor(state.time/60))+':'+pad(state.time%60)+'. SMS z przypomnieniem wyślemy dzień wcześniej.';
+  document.getElementById('doneCode').textContent=code;
+  document.getElementById('doneSum').innerHTML=sumHTML();
+  document.getElementById('wizard').hidden=true;
+  document.getElementById('steps').hidden=true;
+  document.getElementById('done').hidden=false;
+  window.scrollTo({top:0,behavior:'smooth'});
+  renderAdmin();
+});
+document.getElementById('again').onclick=()=>{
+  state={svc:null,date:null,time:null};
+  bf.reset(); bf.querySelectorAll('.field').forEach(f=>f.classList.remove('bad'));
+  document.querySelectorAll('input[name=svc]').forEach(r=>r.checked=false);
+  document.getElementById('done').hidden=true;
+  document.getElementById('wizard').hidden=false;
+  document.getElementById('steps').hidden=false;
+  go(1); renderCal(); renderSlots();
+};
+
+/* ---------- panel ---------- */
+function renderAdmin(){
+  const all=load().slice().sort((a,b)=>(a.date+pad(a.startMin)).localeCompare(b.date+pad(b.startMin)));
+  const t=iso(new Date());
+  const upcoming=all.filter(b=>b.date>=t);
+  const rev=upcoming.reduce((s,b)=>s+b.price,0);
+  const mins=upcoming.reduce((s,b)=>s+b.min,0);
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><b>${upcoming.length}</b><span>nadchodzące wizyty</span></div>
+    <div class="stat"><b>${all.filter(b=>b.date===t).length}</b><span>dzisiaj</span></div>
+    <div class="stat"><b>${rev} zł</b><span>zaplanowany przychód</span></div>
+    <div class="stat"><b>${fmtMin(mins)}</b><span>zajęty czas</span></div>`;
+  const tb=document.querySelector('#tbl tbody');
+  document.getElementById('noda').hidden=upcoming.length>0;
+  document.getElementById('tbl').hidden=upcoming.length===0;
+  tb.innerHTML=upcoming.length?
+    '<tr><th>Termin</th><th>Klient</th><th>Usługa</th><th>Kod</th><th></th></tr>'+
+    upcoming.map(b=>{
+      const e=b.startMin+b.min;
+      return `<tr>
+        <td class="when">${fmtDate(b.date)}<br>${pad(Math.floor(b.startMin/60))}:${pad(b.startMin%60)}–${pad(Math.floor(e/60))}:${pad(e%60)}</td>
+        <td><span class="who">${esc(b.name)}</span><br><span class="tel">${esc(b.phone)}</span>${b.note?'<br><span class="tel">„'+esc(b.note)+'”</span>':''}</td>
+        <td>${esc(b.svc)}<br><span class="tel">${b.price} zł</span></td>
+        <td><span class="pill">${b.code}</span></td>
+        <td><button class="del" data-code="${b.code}">Odwołaj</button></td>
+      </tr>`}).join(''):'';
+}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+document.querySelector('#tbl').addEventListener('click',e=>{
+  const b=e.target.closest('.del'); if(!b)return;
+  save(load().filter(x=>x.code!==b.dataset.code));
+  renderAdmin(); renderCal(); renderSlots();
+});
+document.getElementById('clear').onclick=()=>{
+  if(!load().length||confirm('Usunąć wszystkie rezerwacje z tego demo?')){
+    save([]); renderAdmin(); renderCal(); renderSlots();
+  }
+};
+
+/* ---------- zakladki ---------- */
+document.querySelectorAll('[role=tab]').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('[role=tab]').forEach(x=>x.setAttribute('aria-selected',x===t));
+  document.getElementById('p-book').hidden = t.id!=='t-book';
+  document.getElementById('p-admin').hidden = t.id!=='t-admin';
+  if(t.id==='t-admin') renderAdmin();
+});
+
+renderCal(); renderSlots(); renderAdmin();
+</script>
+</body>
+</html>

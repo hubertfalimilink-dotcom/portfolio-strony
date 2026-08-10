@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strony dla małych firm — szybko, mobilnie, w stałej cenie</title>
+<meta name="description" content="Robię proste strony i systemy rezerwacji dla lokalnych firm. Stała cena ustalona z góry, termin 3-5 dni, strona działa na telefonie.">
+<meta property="og:title" content="Strony dla małych firm — szybko, mobilnie, w stałej cenie">
+<meta property="og:description" content="Stała cena, termin 3-5 dni, strona działa na telefonie. Zobacz przykłady.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d1117; --soft:#5b6773; --bg:#fff; --alt:#f6f8fa;
+  --brand:#111827; --accent:#0969da; --line:#d8dee4;
+  --shadow:0 1px 2px rgba(13,17,23,.05),0 12px 32px rgba(13,17,23,.09);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65;font-size:clamp(16px,1.6vw,17px);overflow-x:hidden}
+.wrap{width:min(1060px,92vw);margin-inline:auto}
+h1,h2,h3{line-height:1.15;letter-spacing:-.025em;font-weight:800}
+a{color:var(--accent)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:var(--brand);color:#fff;text-decoration:none;font-weight:700;padding:.85rem 1.6rem;border-radius:10px;border:0;cursor:pointer;font-size:1rem;transition:opacity .15s,transform .1s}
+.btn:hover{opacity:.87}
+.btn:active{transform:translateY(1px)}
+.btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn-ghost:hover{background:var(--alt);opacity:1}
+
+/* HERO */
+.hero{padding:clamp(3rem,9vw,6rem) 0 clamp(2.5rem,6vw,4rem);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;z-index:-1;background:radial-gradient(48rem 26rem at 72% -8%,rgba(9,105,218,.09),transparent 65%)}
+.tagline{display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:rgba(9,105,218,.09);padding:.4rem .9rem;border-radius:999px;margin-bottom:1.35rem}
+.hero h1{font-size:clamp(2.1rem,5.6vw,3.7rem);max-width:18ch;margin-bottom:1.15rem}
+.hero p.lead{font-size:clamp(1.05rem,2.1vw,1.2rem);color:var(--soft);max-width:54ch;margin-bottom:2rem}
+.cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.facts{display:flex;gap:2.25rem;flex-wrap:wrap;padding-top:1.75rem;border-top:1px solid var(--line)}
+.facts div{min-width:0}
+.facts b{display:block;font-size:1.6rem;letter-spacing:-.03em;line-height:1.2}
+.facts span{font-size:.88rem;color:var(--soft)}
+
+/* PRACE */
+section{padding:clamp(2.75rem,6.5vw,4.5rem) 0}
+#prace{background:var(--alt);border-block:1px solid var(--line)}
+.head{max-width:54ch;margin-bottom:2.25rem}
+.head h2{font-size:clamp(1.7rem,3.8vw,2.4rem);margin-bottom:.55rem}
+.head p{color:var(--soft)}
+.works{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.35rem}
+.work{background:var(--bg);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s}
+.work:hover{transform:translateY(-3px);box-shadow:0 4px 8px rgba(13,17,23,.06),0 18px 44px rgba(13,17,23,.13)}
+.thumb{height:150px;display:grid;place-items:center;font-size:3.2rem;position:relative}
+.thumb.t1{background:linear-gradient(135deg,#2d7a52,#123626)}
+.thumb.t2{background:linear-gradient(135deg,#0b63c5,#062f5e)}
+.thumb.t3{background:linear-gradient(135deg,#6a3ee8,#3a1d8a)}
+.thumb::after{content:'';position:absolute;inset:0;background:radial-gradient(16rem 9rem at 30% 18%,rgba(255,255,255,.16),transparent 70%)}
+.work-body{padding:1.35rem;display:flex;flex-direction:column;flex:1}
+.kind{font-size:.72rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:.45rem}
+.work h3{font-size:1.14rem;margin-bottom:.45rem}
+.work p{font-size:.92rem;color:var(--soft);margin-bottom:1rem;flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1.15rem}
+.chip{font-size:.75rem;font-weight:600;background:var(--alt);border:1px solid var(--line);color:var(--soft);padding:.2rem .6rem;border-radius:999px}
+.work .btn{width:100%;padding:.7rem;font-size:.93rem}
+
+/* CENNIK */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.25rem}
+.tier{border:1.5px solid var(--line);border-radius:16px;padding:1.6rem;display:flex;flex-direction:column;position:relative}
+.tier.best{border-color:var(--accent);box-shadow:0 0 0 4px rgba(9,105,218,.09)}
+.tier.best::after{content:'Najczęściej wybierane';position:absolute;top:-.7rem;left:1.5rem;background:var(--accent);color:#fff;font-size:.7rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:.22rem .7rem;border-radius:999px}
+.tier h3{font-size:1.1rem;margin-bottom:.3rem}
+.tier .price{font-size:2.1rem;font-weight:800;letter-spacing:-.035em;margin:.5rem 0 .15rem}
+.tier .price small{font-size:.95rem;font-weight:600;color:var(--soft);letter-spacing:0}
+.tier .term{font-size:.85rem;color:var(--soft);margin-bottom:1.15rem}
+.tier ul{list-style:none;display:grid;gap:.55rem;font-size:.92rem;flex:1;margin-bottom:1.35rem}
+.tier li{display:flex;gap:.55rem;align-items:flex-start}
+.tier li::before{content:'✓';color:#1a7f37;font-weight:900;flex:none}
+.tier li.no{color:var(--soft)}
+.tier li.no::before{content:'–';color:var(--soft)}
+
+/* PROCES */
+#jak{background:var(--alt);border-block:1px solid var(--line)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.5rem;counter-reset:n}
+.fl{counter-increment:n;padding-top:2.9rem;position:relative}
+.fl::before{content:counter(n);position:absolute;top:0;left:0;width:2.25rem;height:2.25rem;border-radius:9px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:.95rem}
+.fl h3{font-size:1.02rem;margin-bottom:.35rem}
+.fl p{font-size:.92rem;color:var(--soft)}
+
+/* UCZCIWOSC */
+.honest{background:var(--brand);color:#e6edf3;border-radius:18px;padding:clamp(1.6rem,4vw,2.5rem)}
+.honest h2{color:#fff;font-size:clamp(1.4rem,3vw,1.9rem);margin-bottom:.9rem}
+.honest p{margin-bottom:.85rem;color:#bcc7d3}
+.honest p:last-child{margin-bottom:0}
+.honest strong{color:#fff}
+
+/* KONTAKT */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.5rem,4vw,3rem);align-items:center}
+.contact-card{background:var(--alt);border:1px solid var(--line);border-radius:16px;padding:clamp(1.4rem,3vw,2rem)}
+.contact-card h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--soft);margin-bottom:.6rem}
+.contact-card a.big{font-size:1.25rem;font-weight:800;color:var(--ink);text-decoration:none;word-break:break-all}
+.contact-card a.big:hover{color:var(--accent)}
+
+footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.87rem;color:var(--soft);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+@media(max-width:720px){
+  .contact{grid-template-columns:1fr}
+  .facts{gap:1.4rem}
+  .cta .btn{flex:1;min-width:150px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="tagline">Strony dla małych firm</span>
+    <h1>Strona, która działa na telefonie i przynosi telefony.</h1>
+    <p class="lead">Robię proste, szybkie strony dla lokalnych firm i jednoosobowych działalności. Cena ustalona z góry, termin 3–5 dni, bez abonamentu i bez „dopłat za zmiany”.</p>
+    <div class="cta">
+      <a href="#prace" class="btn">Zobacz przykłady</a>
+      <a href="#kontakt" class="btn btn-ghost">Napisz do mnie</a>
+    </div>
+    <div class="facts">
+      <div><b>3–5 dni</b><span>typowy termin realizacji</span></div>
+      <div><b>od 250 zł</b><span>stała cena, ustalona przed startem</span></div>
+      <div><b>0 zł</b><span>miesięcznie za hosting</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="prace">
+  <div class="wrap">
+    <div class="head">
+      <h2>Przykładowe realizacje</h2>
+      <p>To projekty demonstracyjne — fikcyjne firmy, które zrobiłem, żeby pokazać zakres pracy. Każdy jest w pełni klikalny: formularze działają, godziny liczą się same, wszystko otwiera się na telefonie.</p>
+    </div>
+    <div class="works">
+
+      <article class="work">
+        <div class="thumb t1">🍝</div>
+        <div class="work-body">
+          <div class="kind">Strona wizytówka</div>
+          <h3>Restauracja</h3>
+          <p>Menu z cenami, godziny otwarcia liczone na żywo („otwarte teraz — do 22:00”), formularz rezerwacji stolika z walidacją i mapa dojazdu.</p>
+          <div class="chips"><span class="chip">menu</span><span class="chip">rezerwacja</span><span class="chip">mapa</span><span class="chip">godziny na żywo</span></div>
+          <a href="restauracja/" class="btn">Otwórz demo →</a>
+        </div>
+      </article>
+
+      <article class="work">
+        <div class="thumb t2">🔧</div>
+        <div class="work-body">
+          <div class="kind">Strona sprzedażowa</div>
+          <h3>Usługi lokalne — hydraulik</h3>
+          <p>Nastawiona na jedno: żeby klient zadzwonił. Przyklejony przycisk telefonu na komórce, cennik, formularz zgłoszenia usterki, FAQ i obszar dojazdu.</p>
+          <div class="chips"><span class="chip">klik-i-dzwoń</span><span class="chip">cennik</span><span class="chip">formularz</span><span class="chip">FAQ</span></div>
+          <a href="hydraulik/" class="btn">Otwórz demo →</a>
+        </div>
+      </article>
+
+      <article class="work">
+        <div class="thumb t3">📅</div>
+        <div class="work-body">
+          <div class="kind">Aplikacja</div>
+          <h3>System rezerwacji online</h3>
+          <p>Klient wybiera usługę, widzi realnie wolne terminy i sam się zapisuje. Zajęte godziny znikają automatycznie. Właściciel ma panel z listą wizyt i przychodem.</p>
+          <div class="chips"><span class="chip">kalendarz</span><span class="chip">wolne terminy</span><span class="chip">panel</span><span class="chip">bez kolizji</span></div>
+          <a href="rezerwacje/" class="btn">Otwórz demo →</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="cennik">
+  <div class="wrap">
+    <div class="head">
+      <h2>Ile to kosztuje</h2>
+      <p>Cenę ustalamy przed rozpoczęciem i już się nie zmienia. Jeśli w trakcie okaże się, że zakres rośnie — mówię o tym od razu, zanim cokolwiek zrobię.</p>
+    </div>
+    <div class="tiers">
+
+      <div class="tier">
+        <h3>Poprawka</h3>
+        <div class="price">150 zł</div>
+        <div class="term">1–2 dni</div>
+        <ul>
+          <li>Naprawa strony, która nie działa na telefonie</li>
+          <li>Naprawa niedziałającego formularza</li>
+          <li>Przyspieszenie wolnej strony</li>
+          <li>Aktualizacja treści, cen, godzin</li>
+          <li class="no">bez nowej strony</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-ghost">Napisz</a>
+      </div>
+
+      <div class="tier best">
+        <h3>Strona wizytówka</h3>
+        <div class="price">350 zł</div>
+        <div class="term">3–5 dni</div>
+        <ul>
+          <li>Jedna strona, wszystko co potrzebne</li>
+          <li>Działa na telefonie i komputerze</li>
+          <li>Formularz kontaktowy z walidacją</li>
+          <li>Mapa, godziny, cennik, galeria</li>
+          <li>Podstawy pod Google (tytuły, opisy)</li>
+          <li>Hosting 0 zł/mies. + Twoja domena</li>
+          <li>2 rundy poprawek w cenie</li>
+        </ul>
+        <a href="#kontakt" class="btn">Napisz</a>
+      </div>
+
+      <div class="tier">
+        <h3>Strona + rezerwacje</h3>
+        <div class="price">600 zł</div>
+        <div class="term">5–8 dni</div>
+        <ul>
+          <li>Wszystko z pakietu wyżej</li>
+          <li>Zapisy online z kalendarzem</li>
+          <li>Zajęte terminy znikają same</li>
+          <li>Panel z listą wizyt dla Ciebie</li>
+          <li>Powiadomienie e-mail o rezerwacji</li>
+          <li>Krótkie szkolenie, jak tego używać</li>
+        </ul>
+        <a href="#kontakt" class="btn btn-ghost">Napisz</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="jak">
+  <div class="wrap">
+    <div class="head"><h2>Jak to wygląda</h2></div>
+    <div class="flow">
+      <div class="fl"><h3>Piszesz, czego potrzebujesz</h3><p>Krótka rozmowa albo wiadomość. Mówię od razu, ile to będzie kosztowało i ile potrwa.</p></div>
+      <div class="fl"><h3>Robię pierwszą wersję</h3><p>Dostajesz link i klikasz sam — na telefonie i na komputerze. Nic nie płacisz na tym etapie.</p></div>
+      <div class="fl"><h3>Poprawiamy</h3><p>Mówisz, co zmienić. Dwie rundy poprawek są w cenie i zwykle w zupełności wystarczają.</p></div>
+      <div class="fl"><h3>Publikacja i płatność</h3><p>Strona idzie na Twój adres. Płacisz dopiero, gdy działa i Ci się podoba.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="honest">
+      <h2>Zanim napiszesz — kilka rzeczy wprost</h2>
+      <p><strong>Mam 16 lat</strong> i robię strony od jakiegoś czasu. Piszę o tym od razu, bo wolę, żebyś wiedział, z kim rozmawiasz, niż żeby to wyszło później.</p>
+      <p><strong>Płacisz dopiero na końcu</strong>, kiedy widzisz gotową stronę i Ci odpowiada. Nie biorę zaliczek. Jeśli efekt Ci się nie spodoba i nie zdecydujesz się na publikację — nie płacisz nic.</p>
+      <p><strong>Formalnie</strong> rozliczam się przez Useme albo przez konto rodzica, z jego wiedzą i zgodą — dostajesz normalny dokument do księgowości.</p>
+      <p><strong>Czego nie robię:</strong> dużych sklepów internetowych, systemów płatności, integracji z magazynem i utrzymywania cudzego kodu, którego nie pisałem. Powiem szczerze, jeśli Twój projekt jest poza moim zasięgiem.</p>
+    </div>
+  </div>
+</section>
+
+<section id="kontakt">
+  <div class="wrap">
+    <div class="contact">
+      <div>
+        <div class="head" style="margin-bottom:1.25rem">
+          <h2>Napisz, co potrzebujesz</h2>
+          <p>Najlepiej z linkiem do obecnej strony albo do wizytówki w Google — wtedy od razu powiem, co dałoby się poprawić i ile to kosztuje.</p>
+        </div>
+        <p style="color:var(--soft);font-size:.92rem">Odpisuję zwykle tego samego dnia, po szkole.</p>
+      </div>
+      <div class="contact-card">
+        <h3>E-mail</h3>
+        <a class="big" href="mailto:TWOJ@EMAIL.PL?subject=Strona%20dla%20firmy">TWOJ@EMAIL.PL</a>
+        <hr style="border:0;border-top:1px solid var(--line);margin:1.25rem 0">
+        <h3>Telefon / SMS</h3>
+        <a class="big" href="tel:+48000000000">+48 000 000 000</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 — portfolio</span>
+  <span>Wszystkie pokazane firmy są fikcyjne, stworzone na potrzeby przykładów.</span>
+</footer>
+
+</body>
+</html>

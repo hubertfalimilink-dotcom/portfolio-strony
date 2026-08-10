@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trattoria Zielona — kuchnia włoska, Kraków</title>
+<meta name="description" content="Trattoria Zielona — domowa kuchnia włoska w centrum Krakowa. Menu, godziny otwarcia, rezerwacja stolika.">
+<meta property="og:title" content="Trattoria Zielona — kuchnia włoska, Kraków">
+<meta property="og:description" content="Domowa kuchnia włoska w centrum Krakowa. Rezerwacja stolika w 30 sekund.">
+<meta property="og:type" content="restaurant.restaurant">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#14211a; --ink-soft:#4a5b52; --paper:#fbf9f4; --card:#fff;
+  --accent:#1f6b45; --accent-dark:#164e33; --gold:#c9a227; --line:#e3ded2;
+  --shadow:0 1px 2px rgba(20,33,26,.06),0 8px 24px rgba(20,33,26,.07);
+}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+  background:var(--paper); color:var(--ink); line-height:1.65;
+  font-size:clamp(16px,1.6vw,17px); overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+.wrap{width:min(1120px,92vw);margin-inline:auto}
+h1,h2,h3{line-height:1.15;letter-spacing:-.02em;font-weight:700}
+
+/* ---------- NAV ---------- */
+header{position:sticky;top:0;z-index:50;background:rgba(251,249,244,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 0}
+.logo{font-weight:800;font-size:1.15rem;letter-spacing:-.03em;text-decoration:none;color:var(--ink);display:flex;align-items:center;gap:.5rem}
+.logo span{color:var(--accent)}
+.navlinks{display:flex;gap:1.6rem;list-style:none}
+.navlinks a{text-decoration:none;color:var(--ink-soft);font-size:.95rem;font-weight:500;transition:color .15s}
+.navlinks a:hover{color:var(--accent)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--accent);color:#fff;text-decoration:none;font-weight:600;
+  padding:.75rem 1.4rem;border-radius:999px;border:0;cursor:pointer;
+  font-size:.95rem;transition:background .15s,transform .1s;white-space:nowrap;
+}
+.btn:hover{background:var(--accent-dark)}
+.btn:active{transform:translateY(1px)}
+.btn-ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.btn-ghost:hover{background:var(--accent);color:#fff}
+.menu-toggle{display:none;background:none;border:0;font-size:1.5rem;cursor:pointer;color:var(--ink);padding:.25rem .5rem}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;padding:clamp(3rem,9vw,6.5rem) 0 clamp(3rem,7vw,5rem);overflow:hidden}
+.hero::before{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(60rem 32rem at 78% 8%,rgba(31,107,69,.10),transparent 62%),
+    radial-gradient(38rem 26rem at 8% 88%,rgba(201,162,39,.12),transparent 60%);
+}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,4rem);align-items:center}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);
+  background:rgba(31,107,69,.09);padding:.4rem .9rem;border-radius:999px;margin-bottom:1.25rem;
+}
+.hero h1{font-size:clamp(2.1rem,5.4vw,3.6rem);margin-bottom:1.1rem}
+.hero h1 em{font-style:normal;color:var(--accent);position:relative;white-space:nowrap}
+.hero h1 em::after{content:'';position:absolute;left:0;right:0;bottom:.08em;height:.3em;background:rgba(201,162,39,.28);z-index:-1;border-radius:2px}
+.lead{font-size:clamp(1.02rem,2vw,1.15rem);color:var(--ink-soft);max-width:46ch;margin-bottom:1.9rem}
+.hero-cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2rem}
+.trust{display:flex;gap:1.75rem;flex-wrap:wrap;font-size:.9rem;color:var(--ink-soft)}
+.trust b{display:block;font-size:1.45rem;color:var(--ink);font-weight:800;letter-spacing:-.02em}
+
+.hero-card{
+  background:var(--card);border-radius:20px;box-shadow:var(--shadow);
+  border:1px solid var(--line);overflow:hidden;
+}
+.hero-card .photo{
+  height:230px;
+  background:linear-gradient(135deg,#2d7a52,#1a4d34 55%,#123626);
+  position:relative;display:grid;place-items:center;
+}
+.hero-card .photo::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(20rem 12rem at 30% 20%,rgba(255,255,255,.14),transparent 70%);
+}
+.hero-card .photo span{font-size:4.5rem;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
+.hours{padding:1.35rem 1.5rem}
+.hours h3{font-size:.82rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft);margin-bottom:.85rem;font-weight:700}
+.hours ul{list-style:none;display:grid;gap:.5rem}
+.hours li{display:flex;justify-content:space-between;font-size:.94rem;padding-bottom:.5rem;border-bottom:1px dashed var(--line)}
+.hours li:last-child{border:0;padding-bottom:0}
+.hours li span:last-child{font-variant-numeric:tabular-nums;font-weight:600}
+.open-now{display:inline-flex;align-items:center;gap:.45rem;font-size:.85rem;font-weight:700;color:var(--accent);margin-top:1rem}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 rgba(31,107,69,.5);animation:pulse 2s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 8px rgba(31,107,69,0)}100%{box-shadow:0 0 0 0 rgba(31,107,69,0)}}
+
+/* ---------- SECTIONS ---------- */
+section{padding:clamp(3rem,7vw,5rem) 0}
+.section-head{max-width:52ch;margin-bottom:2.5rem}
+.section-head h2{font-size:clamp(1.65rem,3.6vw,2.4rem);margin-bottom:.6rem}
+.section-head p{color:var(--ink-soft)}
+
+#menu{background:var(--card);border-block:1px solid var(--line)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2.5rem 3rem}
+.menu-cat h3{font-size:1.05rem;color:var(--accent);text-transform:uppercase;letter-spacing:.07em;font-size:.85rem;margin-bottom:1.1rem;padding-bottom:.6rem;border-bottom:2px solid rgba(31,107,69,.18)}
+.dish{display:flex;justify-content:space-between;align-items:baseline;gap:1rem;margin-bottom:1.05rem}
+.dish-name{font-weight:600}
+.dish-desc{display:block;font-weight:400;font-size:.87rem;color:var(--ink-soft);margin-top:.15rem}
+.dish-price{font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(201,162,39,.18);color:#8a6d10;padding:.12rem .45rem;border-radius:4px;margin-left:.4rem;vertical-align:middle}
+
+/* ---------- REZERWACJA ---------- */
+.res-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,5vw,3.5rem);align-items:start}
+form{background:var(--card);padding:clamp(1.5rem,3vw,2.25rem);border-radius:18px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.field{margin-bottom:1.15rem}
+label{display:block;font-size:.86rem;font-weight:600;margin-bottom:.4rem}
+input,select,textarea{
+  width:100%;padding:.8rem .95rem;border:1.5px solid var(--line);border-radius:10px;
+  font:inherit;font-size:.95rem;background:var(--paper);color:var(--ink);transition:border-color .15s,box-shadow .15s;
+}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);box-shadow:0 0 0 3px rgba(31,107,69,.13)}
+input:user-invalid{border-color:#c0392b}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.err{color:#c0392b;font-size:.82rem;margin-top:.35rem;display:none}
+.field.bad .err{display:block}
+.field.bad input,.field.bad select{border-color:#c0392b}
+form .btn{width:100%;padding:.95rem;font-size:1rem;margin-top:.35rem}
+.form-note{font-size:.82rem;color:var(--ink-soft);text-align:center;margin-top:.9rem}
+.ok{display:none;text-align:center;padding:2.5rem 1rem}
+.ok.show{display:block}
+.ok .check{width:56px;height:56px;border-radius:50%;background:rgba(31,107,69,.12);color:var(--accent);display:grid;place-items:center;font-size:1.8rem;margin:0 auto 1rem}
+.ok h3{font-size:1.3rem;margin-bottom:.5rem}
+.ok p{color:var(--ink-soft)}
+form.sent .fields{display:none}
+
+.info-block{margin-bottom:1.8rem}
+.info-block h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.09em;color:var(--ink-soft);margin-bottom:.5rem}
+.info-block p,.info-block a{color:var(--ink);text-decoration:none;font-size:1.05rem;font-weight:600}
+.info-block a:hover{color:var(--accent)}
+.map{border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);aspect-ratio:16/10;background:#e8e4da}
+.map iframe{width:100%;height:100%;border:0;display:block}
+
+/* ---------- FOOTER ---------- */
+footer{background:var(--ink);color:#c4d1c9;padding:2.75rem 0 2rem;font-size:.9rem}
+.foot-grid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-bottom:1.75rem}
+footer a{color:#c4d1c9;text-decoration:none}
+footer a:hover{color:#fff}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.11);padding-top:1.25rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-size:.82rem;color:#8fa398}
+
+/* ---------- DEMO BADGE ---------- */
+.demo-bar{background:var(--gold);color:#2b2100;text-align:center;padding:.55rem 1rem;font-size:.85rem;font-weight:600}
+.demo-bar a{color:#2b2100;text-decoration:underline}
+
+/* ---------- RESPONSIVE ---------- */
+@media(max-width:860px){
+  .hero-grid,.res-grid{grid-template-columns:1fr}
+  .menu-toggle{display:block}
+  .navlinks{
+    display:none;position:absolute;top:100%;left:0;right:0;
+    background:var(--card);flex-direction:column;gap:0;padding:.5rem 0;
+    border-bottom:1px solid var(--line);box-shadow:var(--shadow);
+  }
+  .navlinks.open{display:flex}
+  .navlinks a{display:block;padding:.85rem 4vw;font-size:1rem}
+  nav .btn{display:none}
+  .hero-card .photo{height:180px}
+}
+@media(max-width:460px){
+  .row{grid-template-columns:1fr}
+  .trust{gap:1.1rem}
+  .hero-cta .btn{width:100%}
+}
+/* iOS Safari zoomuje stronę, gdy pole ma font mniejszy niż 16px */
+@media(max-width:860px){
+  input,select,textarea{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="demo-bar">
+  Strona demonstracyjna — fikcyjna restauracja. Przykład realizacji.
+</div>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="#" class="logo">🌿 Trattoria <span>Zielona</span></a>
+      <ul class="navlinks" id="nav">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#rezerwacja">Rezerwacja</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+      <a href="#rezerwacja" class="btn">Zarezerwuj stolik</a>
+      <button class="menu-toggle" id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">Kraków · Kazimierz</span>
+      <h1>Włoska kuchnia, <em>bez pośpiechu</em>.</h1>
+      <p class="lead">Makaron robimy rano, sos dusi się cztery godziny, a pizza wychodzi z pieca opalanego drewnem. Dwadzieścia dwa stoliki — dlatego warto zarezerwować.</p>
+      <div class="hero-cta">
+        <a href="#rezerwacja" class="btn">Zarezerwuj stolik</a>
+        <a href="#menu" class="btn btn-ghost">Zobacz menu</a>
+      </div>
+      <div class="trust">
+        <div><b>4,8</b>Google (312 opinii)</div>
+        <div><b>22</b>stoliki</div>
+        <div><b>2014</b>od tego roku</div>
+      </div>
+    </div>
+    <aside class="hero-card">
+      <div class="photo"><span>🍝</span></div>
+      <div class="hours">
+        <h3>Godziny otwarcia</h3>
+        <ul>
+          <li><span>Poniedziałek</span><span>nieczynne</span></li>
+          <li><span>Wt — Czw</span><span>12:00 – 22:00</span></li>
+          <li><span>Pt — Sob</span><span>12:00 – 23:30</span></li>
+          <li><span>Niedziela</span><span>12:00 – 21:00</span></li>
+        </ul>
+        <div class="open-now"><span class="dot"></span><span id="status">Sprawdzam…</span></div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Menu</h2>
+      <p>Karta zmienia się co sezon. Poniżej stałe pozycje, które zostają na zawsze — bo goście by nam nie wybaczyli.</p>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-cat">
+        <h3>Przystawki</h3>
+        <div class="dish"><div class="dish-name">Bruschetta al pomodoro<span class="dish-desc">Pieczywo na zakwasie, pomidory malinowe, bazylia</span></div><div class="dish-price">24 zł</div></div>
+        <div class="dish"><div class="dish-name">Vitello tonnato<span class="dish-desc">Cielęcina, sos tuńczykowy, kapary</span></div><div class="dish-price">38 zł</div></div>
+        <div class="dish"><div class="dish-name">Burrata z Apulii<span class="dish-desc">Pomidory konfitowane, oliwa, bazylia</span><span class="tag">WEGE</span></div><div class="dish-price">42 zł</div></div>
+      </div>
+      <div class="menu-cat">
+        <h3>Makarony</h3>
+        <div class="dish"><div class="dish-name">Cacio e pepe<span class="dish-desc">Tonnarelli, pecorino romano, pieprz</span><span class="tag">WEGE</span></div><div class="dish-price">44 zł</div></div>
+        <div class="dish"><div class="dish-name">Ragù alla bolognese<span class="dish-desc">Tagliatelle, wołowina duszona 4 h</span></div><div class="dish-price">52 zł</div></div>
+        <div class="dish"><div class="dish-name">Vongole<span class="dish-desc">Spaghetti, małże, białe wino, czosnek</span></div><div class="dish-price">64 zł</div></div>
+      </div>
+      <div class="menu-cat">
+        <h3>Pizza z pieca</h3>
+        <div class="dish"><div class="dish-name">Margherita<span class="dish-desc">Fior di latte, pomidory San Marzano</span><span class="tag">WEGE</span></div><div class="dish-price">36 zł</div></div>
+        <div class="dish"><div class="dish-name">Diavola<span class="dish-desc">Salami pikantne, oliwki, oregano</span></div><div class="dish-price">46 zł</div></div>
+        <div class="dish"><div class="dish-name">Quattro formaggi<span class="dish-desc">Gorgonzola, taleggio, fontina, parmezan</span><span class="tag">WEGE</span></div><div class="dish-price">48 zł</div></div>
+      </div>
+      <div class="menu-cat">
+        <h3>Desery</h3>
+        <div class="dish"><div class="dish-name">Tiramisù<span class="dish-desc">Robione codziennie rano</span></div><div class="dish-price">26 zł</div></div>
+        <div class="dish"><div class="dish-name">Panna cotta<span class="dish-desc">Sos z sezonowych owoców</span></div><div class="dish-price">24 zł</div></div>
+        <div class="dish"><div class="dish-name">Affogato<span class="dish-desc">Lody waniliowe, gorące espresso</span></div><div class="dish-price">19 zł</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rezerwacja">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Rezerwacja stolika</h2>
+      <p>Odpowiadamy w ciągu godziny w godzinach otwarcia. Na weekend warto pisać z wyprzedzeniem.</p>
+    </div>
+    <div class="res-grid">
+      <div id="kontakt">
+        <div class="info-block">
+          <h3>Adres</h3>
+          <p>ul. Józefa 18<br>31-056 Kraków</p>
+        </div>
+        <div class="info-block">
+          <h3>Telefon</h3>
+          <a href="tel:+48123456789">+48 12 345 67 89</a>
+        </div>
+        <div class="info-block">
+          <h3>E-mail</h3>
+          <a href="mailto:rezerwacje@example.com">rezerwacje@example.com</a>
+        </div>
+        <div class="map">
+          <iframe
+            title="Mapa dojazdu"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=19.941%2C50.049%2C19.953%2C50.055&layer=mapnik&marker=50.0518%2C19.9470"></iframe>
+        </div>
+      </div>
+
+      <form id="resForm" novalidate>
+        <div class="fields">
+          <div class="row">
+            <div class="field">
+              <label for="name">Imię i nazwisko</label>
+              <input type="text" id="name" name="name" autocomplete="name" required>
+              <div class="err">Podaj imię i nazwisko.</div>
+            </div>
+            <div class="field">
+              <label for="phone">Telefon</label>
+              <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="600 100 200" required>
+              <div class="err">Podaj numer telefonu (min. 9 cyfr).</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" autocomplete="email" inputmode="email" placeholder="jan@example.com" required>
+            <div class="err">Podaj poprawny adres e-mail.</div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="date">Data</label>
+              <input type="date" id="date" name="date" required>
+              <div class="err">Wybierz datę (dziś lub później).</div>
+            </div>
+            <div class="field">
+              <label for="time">Godzina</label>
+              <select id="time" name="time" required>
+                <option value="">Wybierz…</option>
+                <option>12:00</option><option>13:00</option><option>14:00</option>
+                <option>17:00</option><option>18:00</option><option>19:00</option>
+                <option>20:00</option><option>21:00</option>
+              </select>
+              <div class="err">Wybierz godzinę.</div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="people">Liczba osób</label>
+            <select id="people" name="people" required>
+              <option value="">Wybierz…</option>
+              <option>1</option><option selected>2</option><option>3</option><option>4</option>
+              <option>5</option><option>6</option><option>7+ (zadzwoń)</option>
+            </select>
+            <div class="err">Podaj liczbę osób.</div>
+          </div>
+          <div class="field">
+            <label for="note">Uwagi <span style="font-weight:400;color:var(--ink-soft)">(opcjonalnie)</span></label>
+            <textarea id="note" name="note" rows="3" placeholder="Alergie, urodziny, krzesełko dla dziecka…"></textarea>
+          </div>
+          <button type="submit" class="btn">Wyślij rezerwację</button>
+          <p class="form-note">Potwierdzenie wysyłamy SMS-em. Rezerwację trzymamy 15 minut.</p>
+        </div>
+        <div class="ok" id="ok">
+          <div class="check">✓</div>
+          <h3>Rezerwacja wysłana</h3>
+          <p id="okmsg"></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo" style="color:#fff;margin-bottom:.5rem">🌿 Trattoria <span style="color:var(--gold)">Zielona</span></div>
+        <p style="max-width:32ch">ul. Józefa 18, 31-056 Kraków<br><a href="tel:+48123456789">+48 12 345 67 89</a></p>
+      </div>
+      <div>
+        <p style="margin-bottom:.4rem"><a href="#menu">Menu</a></p>
+        <p style="margin-bottom:.4rem"><a href="#rezerwacja">Rezerwacja</a></p>
+        <p><a href="#kontakt">Dojazd</a></p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Trattoria Zielona — strona demonstracyjna</span>
+      <span>Projekt i wykonanie strony</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// --- mobilne menu ---
+const burger=document.getElementById('burger'),nav=document.getElementById('nav');
+burger.addEventListener('click',()=>{
+  const open=nav.classList.toggle('open');
+  burger.setAttribute('aria-expanded',open);
+  burger.textContent=open?'✕':'☰';
+});
+nav.addEventListener('click',e=>{
+  if(e.target.tagName==='A'){nav.classList.remove('open');burger.textContent='☰';burger.setAttribute('aria-expanded','false');}
+});
+
+// --- czy otwarte teraz ---
+(function(){
+  const h=[null,[12,22],[12,22],[12,22],[12,23.5],[12,23.5],[12,21]]; // pon=0 ... nd=6
+  const now=new Date(), d=(now.getDay()+6)%7, t=now.getHours()+now.getMinutes()/60;
+  const el=document.getElementById('status'), today=h[d];
+  if(today && t>=today[0] && t<today[1]){
+    const end=today[1], hh=Math.floor(end), mm=Math.round((end-hh)*60);
+    el.textContent='Otwarte teraz — do '+hh+':'+String(mm).padStart(2,'0');
+  }else{
+    el.textContent='Zamknięte — zapraszamy jutro';
+    document.querySelector('.dot').style.background='#c0392b';
+    document.querySelector('.open-now').style.color='#c0392b';
+  }
+})();
+
+// --- data: dziś jako minimum ---
+const dateEl=document.getElementById('date');
+const today=new Date().toISOString().split('T')[0];
+dateEl.min=today; dateEl.value=today;
+
+// --- walidacja formularza ---
+const form=document.getElementById('resForm');
+const rules={
+  name:v=>v.trim().length>=3,
+  phone:v=>(v.replace(/\D/g,'').length>=9),
+  email:v=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
+  date:v=>v && v>=today,
+  time:v=>!!v,
+  people:v=>!!v
+};
+function check(el){
+  const ok=rules[el.name] ? rules[el.name](el.value) : true;
+  el.closest('.field').classList.toggle('bad',!ok);
+  return ok;
+}
+form.querySelectorAll('input,select').forEach(el=>{
+  el.addEventListener('blur',()=>{if(el.value)check(el)});
+  el.addEventListener('input',()=>{if(el.closest('.field').classList.contains('bad'))check(el)});
+});
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  let ok=true, first=null;
+  form.querySelectorAll('input[required],select[required]').forEach(el=>{
+    if(!check(el)){ok=false; first=first||el;}
+  });
+  if(!ok){first.focus();first.scrollIntoView({block:'center',behavior:'smooth'});return;}
+  const f=new FormData(form);
+  document.getElementById('okmsg').textContent=
+    'Dziękujemy, '+f.get('name').split(' ')[0]+'. Stolik dla '+f.get('people')+
+    ' os. — '+f.get('date')+', godz. '+f.get('time')+'. Potwierdzenie wyślemy SMS-em.';
+  form.classList.add('sent');
+  document.getElementById('ok').classList.add('show');
+  document.getElementById('ok').scrollIntoView({block:'center',behavior:'smooth'});
+});
+</script>
+</body>
+</html>
